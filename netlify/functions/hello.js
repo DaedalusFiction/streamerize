@@ -2,8 +2,8 @@ const axios = require("axios");
 
 const api = axios.create({
     headers: {
-        Authorization: process.env.TWITCH_AUTHORIZATION,
-        "Client-Id": process.env.TWITCH_CLIENT_ID,
+        Authorization: process.env.REACT_APP_TWITCH_AUTHORIZATION,
+        "Client-Id": process.env.REACT_APP_TWITCH_CLIENT_ID,
     },
 });
 
@@ -13,7 +13,7 @@ exports.handler = async function (event, context) {
     try {
         const { id } = event.queryStringParameters;
         const response = await api.get(
-            process.env.TWITCH_BASE_URL + "/streams"
+            process.env.REACT_APP_TWITCH_BASE_URL + "/streams"
         );
         console.log(response);
         return {
