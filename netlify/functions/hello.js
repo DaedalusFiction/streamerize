@@ -14,7 +14,9 @@ exports.handler = async function (event, context) {
     try {
         const { id } = event.queryStringParameters;
         console.log(process.env.REACT_APP_TWITCH_BASE_URL);
-        const response = await api.get(process.env.REACT_APP_TWITCH_BASE_URL);
+        const response = await api.get(
+            process.env.REACT_APP_TWITCH_BASE_URL + "/streams"
+        );
 
         // console.log("Response:::: ", response);
         return {
