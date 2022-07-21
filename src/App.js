@@ -18,6 +18,7 @@ function App() {
     const [streamList, setStreamList] = useState("stream-list");
     const [streamID, setStreamID] = useState("stream-ID");
     const handleGetRandomStream = async () => {
+        console.log("base url: ", process.env.REACT_APP_TWITCH_BASE_URL);
         const url = `/.netlify/functions/hello`;
         try {
             setLoading(true);

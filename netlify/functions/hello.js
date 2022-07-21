@@ -9,7 +9,6 @@ const api = axios.create({
 
 exports.handler = async function (event, context) {
     console.log("triggered");
-    console.log(process.env.REACT_APP_TWITCH_BASE_URL);
     // console.log(event);
     // console.log(context);
     try {
