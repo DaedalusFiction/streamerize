@@ -24,7 +24,7 @@ function App() {
             setLoading(true);
             const todo = await fetch(url).then((res) => res.json());
             // setStreamList(todo.title);
-            console.log(todo);
+            console.log(todo.body.data[0]);
         } catch (err) {
             console.log(err);
         } finally {
