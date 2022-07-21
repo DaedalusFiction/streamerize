@@ -13,9 +13,8 @@ exports.handler = async function (event, context) {
     // console.log(context);
     try {
         const { id } = event.queryStringParameters;
-        const response = await api.get(
-            "https://jsonplaceholder.typicode.com/todos"
-        );
+        console.log(process.env.REACT_APP_TWITCH_BASE_URL);
+        const response = await api.get(process.env.REACT_APP_TWITCH_BASE_URL);
         // console.log("Response:::: ", response);
         return {
             statusCode: 200,
