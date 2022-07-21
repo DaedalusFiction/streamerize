@@ -18,7 +18,7 @@ function App() {
     const [streamList, setStreamList] = useState("stream-list");
     const [streamID, setStreamID] = useState("stream-ID");
     const handleGetRandomStream = async () => {
-        const url = `/.netlify/functions/hello?id=${streamID}`;
+        const url = `/.netlify/functions/hello`;
         try {
             setLoading(true);
             const todo = await fetch(url).then((res) => res.json());
