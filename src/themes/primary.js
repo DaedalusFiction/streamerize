@@ -56,7 +56,7 @@ primary = createTheme(primary, {
         h1: {
             fontFamily: primary.typography.primary.accent,
             color: primary.palette.text.secondary,
-            fontSize: "clamp(3rem, 4vw, 5rem)",
+            fontSize: "clamp(2.5rem, 4vw, 5rem)",
         },
         h2: {
             fontFamily: primary.typography.primary.accent,

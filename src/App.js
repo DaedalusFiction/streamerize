@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
+import Sidebar from "./components/Sidebar";
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -65,10 +66,15 @@ function App() {
                                 </Box>
                             </Grid>
                             <Grid item xs={12} md={3}>
-                                <Box>Options panel</Box>
-                                <Button onClick={handleGetRandomStream}>
-                                    Random Stream
-                                </Button>
+                                <Box>
+                                    <Sidebar />
+                                </Box>
+                                <Box>
+                                    <Button>+</Button>
+                                    <Button onClick={handleGetRandomStream}>
+                                        Random Stream
+                                    </Button>
+                                </Box>
                             </Grid>
                         </Grid>
                     </Paper>
