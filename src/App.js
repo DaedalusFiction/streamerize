@@ -15,6 +15,13 @@ import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 
 const helloLocation = `/.netlify/functions/hello`;
+const baseURL = "https://twitch.tv/";
+
+const categories = [
+    { name: "All Streams", id: "1" },
+    { name: "Just Chatting", id: "2" },
+    { name: "Music", id: "3" },
+];
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -23,28 +30,27 @@ function App() {
     const [streamsIndex, setStreamsIndex] = useState(0);
     const [savedStreams, setSavedStreams] = useState([]);
     const [streamID, setStreamID] = useState("stream-ID");
-    const [selectedCategory, setSelectedCategory] = useState("all");
+    const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
     useEffect(() => {
-        getStreams(selectedCategory);
-    }, [selectedCategory]);
+        getStreams();
+    }, []);
 
-    const getStreams = async (selectedCategory) => {
-        console.log(selectedCategory);
+    const getStreams = async () => {
         try {
             setLoading(true);
             const todo = await fetch(helloLocation).then((res) => res.json());
             // setStreamList(todo.title);
-            console.log(todo.body.data);
             setStreamList(todo.body.data);
-            setCurrentStream(todo.body.data[0]);
+            setCurrentStream(todo.body.data[0].user_name);
         } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
         }
     };
-    const handleGetRandomStream = async () => {
+    const handleGetRandomStream = () => {
+        setCurrentStream(streamList[streamsIndex].user_name);
         setStreamsIndex(streamsIndex + 1);
     };
     const handleSaveStream = () => {
@@ -63,8 +69,9 @@ function App() {
                 >
                     <Paper sx={{ padding: ".5em" }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={9}>
+                            <Grid item xs={12} xl={9}>
                                 <Box
+                                    id="player"
                                     sx={{
                                         position: "relative",
                                         paddingTop: "56.25%",
@@ -79,21 +86,24 @@ function App() {
                                         id="player"
                                         width="100%"
                                         height="100%"
-                                        url="https://www.twitch.tv/goesonghost"
+                                        url={baseURL + currentStream}
                                     />
                                 </Box>
                             </Grid>
-                            <Grid item xs={12} md={3}>
+                            <Grid item xs={12} xl={3}>
                                 <Box
                                     sx={{
                                         display: "flex",
                                         flexFlow: {
                                             xs: "column-reverse",
-                                            md: "column",
+                                            xl: "column",
                                         },
+                                        justifyContent: "space-between",
+                                        height: "100%",
                                     }}
                                 >
                                     <Sidebar
+                                        categories={categories}
                                         savedStreams={savedStreams}
                                         setSavedStreams={setSavedStreams}
                                         selectedCategory={selectedCategory}

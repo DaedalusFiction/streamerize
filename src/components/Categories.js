@@ -8,22 +8,23 @@ import {
     ListItemText,
 } from "@mui/material";
 import React from "react";
-const categories = ["All Streams", "Just Chatting", "Music"];
 
-const Categories = ({ selectedCategory, setSelectedCategory }) => {
+const Categories = ({ categories, selectedCategory, setSelectedCategory }) => {
     return (
         <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
             <List>
                 {categories.map((category) => {
                     return (
-                        <ListItem key={category} disablePadding>
+                        <ListItem key={category.id} disablePadding>
                             <ListItemButton
-                                selected={category === selectedCategory}
+                                selected={
+                                    category.name === selectedCategory.name
+                                }
                                 onClick={() => {
                                     setSelectedCategory(category);
                                 }}
                             >
-                                <ListItemText primary={category} />
+                                <ListItemText primary={category.name} />
                             </ListItemButton>
                         </ListItem>
                     );

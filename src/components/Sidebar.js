@@ -41,6 +41,7 @@ function a11yProps(index) {
 }
 
 export default function Sidebar({
+    categories,
     savedStreams,
     setSavedStreams,
     selectedCategory,
@@ -53,7 +54,7 @@ export default function Sidebar({
     };
 
     return (
-        <Box sx={{ width: "100%" }}>
+        <Box id="sidebar" sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
                     value={value}
@@ -67,6 +68,7 @@ export default function Sidebar({
             </Box>
             <TabPanel value={value} index={0}>
                 <Categories
+                    categories={categories}
                     selectedCategory={selectedCategory}
                     setSelectedCategory={setSelectedCategory}
                 />
