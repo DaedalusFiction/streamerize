@@ -18,7 +18,7 @@ const helloLocation = `/.netlify/functions/hello`;
 const baseURL = "https://twitch.tv/";
 
 const categories = [
-    { name: "All Streams", id: "1" },
+    { name: "All Streams", id: "33214" },
     { name: "Just Chatting", id: "2" },
     { name: "Music", id: "3" },
 ];
@@ -39,7 +39,9 @@ function App() {
     const getStreams = async () => {
         try {
             setLoading(true);
-            const todo = await fetch(helloLocation).then((res) => res.json());
+            const todo = await fetch(
+                `${helloLocation}?id=${categories[0].id}`
+            ).then((res) => res.json());
             // setStreamList(todo.title);
             setStreamList(todo.body.data);
             setCurrentStream(todo.body.data[0].user_name);
@@ -50,7 +52,7 @@ function App() {
         }
     };
     const handleGetRandomStream = () => {
-        setCurrentStream(streamList[streamsIndex].user_name);
+        setCurrentStream(streamList[streamsIndex + 1].user_name);
         setStreamsIndex(streamsIndex + 1);
     };
     const handleSaveStream = () => {

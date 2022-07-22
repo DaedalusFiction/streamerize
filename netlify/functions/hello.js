@@ -8,17 +8,16 @@ const api = axios.create({
 });
 
 exports.handler = async function (event, context) {
-    console.log("triggered");
-    // console.log(event);
-    // console.log(context);
+    console.log("event: ", event);
+    console.log("context: ", context);
     try {
         const { id } = event.queryStringParameters;
-        console.log(process.env.REACT_APP_TWITCH_BASE_URL);
-        const response = await api.get(
-            process.env.REACT_APP_TWITCH_BASE_URL + "/streams"
-        );
 
-        // console.log("Response:::: ", response);
+        const response = await api.get(
+            process.env.REACT_APP_TWITCH_BASE_URL + `/streams?game_id=${id}`
+        );
+        console.log(response.data);
+
         return {
             statusCode: 200,
             body: JSON.stringify({ body: response.data }),
