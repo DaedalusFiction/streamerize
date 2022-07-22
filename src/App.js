@@ -14,23 +14,41 @@ import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 
+const helloLocation = `/.netlify/functions/hello`;
+
 function App() {
     const [loading, setLoading] = useState(false);
+    const [currentStream, setCurrentStream] = useState(null);
     const [streamList, setStreamList] = useState("stream-list");
+    const [streamsIndex, setStreamsIndex] = useState(0);
+    const [savedStreams, setSavedStreams] = useState([]);
     const [streamID, setStreamID] = useState("stream-ID");
-    const handleGetRandomStream = async () => {
-        console.log("base url: ", process.env.REACT_APP_TWITCH_BASE_URL);
-        const url = `/.netlify/functions/hello`;
+    const [selectedCategory, setSelectedCategory] = useState("all");
+
+    useEffect(() => {
+        getStreams(selectedCategory);
+    }, [selectedCategory]);
+
+    const getStreams = async (selectedCategory) => {
+        console.log(selectedCategory);
         try {
             setLoading(true);
-            const todo = await fetch(url).then((res) => res.json());
+            const todo = await fetch(helloLocation).then((res) => res.json());
             // setStreamList(todo.title);
-            console.log(todo.body.data[0]);
+            console.log(todo.body.data);
+            setStreamList(todo.body.data);
+            setCurrentStream(todo.body.data[0]);
         } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
         }
+    };
+    const handleGetRandomStream = async () => {
+        setStreamsIndex(streamsIndex + 1);
+    };
+    const handleSaveStream = () => {
+        setSavedStreams([...savedStreams, currentStream]);
     };
     return (
         <ThemeProvider theme={primary}>
@@ -66,14 +84,38 @@ function App() {
                                 </Box>
                             </Grid>
                             <Grid item xs={12} md={3}>
-                                <Box>
-                                    <Sidebar />
-                                </Box>
-                                <Box>
-                                    <Button>+</Button>
-                                    <Button onClick={handleGetRandomStream}>
-                                        Random Stream
-                                    </Button>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexFlow: {
+                                            xs: "column-reverse",
+                                            md: "column",
+                                        },
+                                    }}
+                                >
+                                    <Sidebar
+                                        savedStreams={savedStreams}
+                                        setSavedStreams={setSavedStreams}
+                                        selectedCategory={selectedCategory}
+                                        setSelectedCategory={
+                                            setSelectedCategory
+                                        }
+                                    />
+                                    <Box sx={{ display: "flex", gap: ".25em" }}>
+                                        <Button
+                                            variant="contained"
+                                            onClick={handleSaveStream}
+                                        >
+                                            +
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            fullWidth
+                                            onClick={handleGetRandomStream}
+                                        >
+                                            Random Stream
+                                        </Button>
+                                    </Box>
                                 </Box>
                             </Grid>
                         </Grid>

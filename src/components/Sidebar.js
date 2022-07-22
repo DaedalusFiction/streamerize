@@ -4,6 +4,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import SavedStreams from "./SavedStreams";
+import Categories from "./Categories";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -38,7 +40,12 @@ function a11yProps(index) {
     };
 }
 
-export default function Sidebar() {
+export default function Sidebar({
+    savedStreams,
+    setSavedStreams,
+    selectedCategory,
+    setSelectedCategory,
+}) {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -53,14 +60,24 @@ export default function Sidebar() {
                     onChange={handleChange}
                     aria-label="basic tabs example"
                 >
-                    <Tab label="Streams" {...a11yProps(0)} />
+                    <Tab label="Categories" {...a11yProps(0)} />
+                    <Tab label="Saved" {...a11yProps(1)} />
                     <Tab label="Settings" {...a11yProps(1)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                Streams
+                <Categories
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                />
             </TabPanel>
             <TabPanel value={value} index={1}>
+                <SavedStreams
+                    savedStreams={savedStreams}
+                    setSavedStreams={setSavedStreams}
+                />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
                 Settings
             </TabPanel>
         </Box>
