@@ -18,7 +18,7 @@ const helloLocation = `/.netlify/functions/hello`;
 const baseURL = "https://twitch.tv/";
 
 const categories = [
-    { name: "All Streams", id: "33214" },
+    { name: "All Streams", id: "460636" },
     { name: "Just Chatting", id: "2" },
     { name: "Music", id: "3" },
 ];
@@ -39,12 +39,12 @@ function App() {
     const getStreams = async () => {
         try {
             setLoading(true);
-            const todo = await fetch(
+            const streams = await fetch(
                 `${helloLocation}?id=${categories[0].id}`
             ).then((res) => res.json());
-            // setStreamList(todo.title);
-            setStreamList(todo.body.data);
-            setCurrentStream(todo.body.data[0].user_name);
+            // setStreamList(streams.title);
+            setStreamList(streams.body.data);
+            setCurrentStream(streams.body.data[0].user_name);
         } catch (err) {
             console.log(err);
         } finally {
@@ -52,8 +52,15 @@ function App() {
         }
     };
     const handleGetRandomStream = () => {
-        setCurrentStream(streamList[streamsIndex + 1].user_name);
-        setStreamsIndex(streamsIndex + 1);
+        if (!loading) {
+            setLoading(true);
+            setCurrentStream(streamList[streamsIndex + 1].user_name);
+            setStreamsIndex(streamsIndex + 1);
+            //prevent users from getting stream more than once per second
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
+        }
     };
     const handleSaveStream = () => {
         setSavedStreams([...savedStreams, currentStream]);
@@ -63,6 +70,10 @@ function App() {
             <CssBaseline />
             <Container maxWidth="xl">
                 <Typography variant="h1">STREAMERIZE</Typography>
+                <Typography variant="h2" color="secondary">
+                    Browse random twitch.tv streams with fewer than ten viewers
+                </Typography>
+
                 <Paper
                     sx={{
                         padding: ".25em",
@@ -88,6 +99,9 @@ function App() {
                                         id="player"
                                         width="100%"
                                         height="100%"
+                                        onDuration={() => {
+                                            setLoading(false);
+                                        }}
                                         url={baseURL + currentStream}
                                     />
                                 </Box>
@@ -121,11 +135,14 @@ function App() {
                                             +
                                         </Button>
                                         <Button
+                                            disabled={loading}
                                             variant="contained"
                                             fullWidth
                                             onClick={handleGetRandomStream}
                                         >
-                                            Random Stream
+                                            {loading
+                                                ? "Loading..."
+                                                : "Random Stream"}
                                         </Button>
                                     </Box>
                                 </Box>

@@ -59,24 +59,8 @@ primary = createTheme(primary, {
             fontSize: "clamp(2.5rem, 4vw, 5rem)",
         },
         h2: {
-            fontFamily: primary.typography.primary.accent,
-        },
-        h3: {
-            fontFamily: primary.typography.primary.accent,
-        },
-        h5: {
-            color: primary.palette.text.secondary,
-            fontWeight: "bold",
-            // fontSize: "clamp(1rem, 2vw, 5rem)",
-        },
-        h6: {
-            fontWeight: "bold",
-        },
-        subtitle1: {
-            color: primary.palette.custom.darkMuted,
-        },
-        subtitle2: {
-            color: primary.palette.custom.darkMuted,
+            fontFamily: primary.typography.primary.main,
+            fontSize: "1rem",
         },
     },
 });

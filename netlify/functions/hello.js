@@ -8,15 +8,34 @@ const api = axios.create({
 });
 
 exports.handler = async function (event, context) {
-    console.log("event: ", event);
-    console.log("context: ", context);
+    // console.log("event: ", event);
+    // console.log("context: ", context);
     try {
-        const { id } = event.queryStringParameters;
+        const { id, cursor } = event.queryStringParameters;
 
-        const response = await api.get(
-            process.env.REACT_APP_TWITCH_BASE_URL + `/streams?game_id=${id}`
+        var response = await api.get(
+            process.env.REACT_APP_TWITCH_BASE_URL +
+                `/streams?game_id=${id}&first=20`
         );
-        console.log(response.data);
+        var pageCursor = response.data.pagination.cursor;
+        console.log("first response: ", response.data.data);
+        //check if list is last and viewer count
+        while (
+            response.data.pagination.cursor &&
+            response.data.data[0].viewer_count > 10
+        ) {
+            pageCursor = response.data.pagination.cursor;
+            response = await api.get(
+                process.env.REACT_APP_TWITCH_BASE_URL +
+                    `/streams?game_id=${id}&first=20&after=${response.data.pagination.cursor}`
+            );
+
+            console.log(response.data.data[0].viewer_count);
+        }
+        response = await api.get(
+            process.env.REACT_APP_TWITCH_BASE_URL +
+                `/streams?after=${pageCursor}`
+        );
 
         return {
             statusCode: 200,
