@@ -20,8 +20,8 @@ const baseURL = "https://twitch.tv/";
 
 const categories = [
     { name: "All Streams", id: 0 },
-    { name: "Just Chatting", id: 1 },
-    { name: "Music", id: 2 },
+    { name: "Music", id: 1 },
+    { name: "Just Chatting", id: 2 },
 ];
 
 function App() {
@@ -63,7 +63,6 @@ function App() {
     };
     const handleGetRandomStream = (category) => {
         setLoading(true);
-        console.log(streamsList[category.id].data);
         if (streamsIndex + 1 < streamsList[category.id].data.length) {
             setCurrentStream(
                 streamsList[category.id].data[streamsIndex + 1].user_name
@@ -84,8 +83,20 @@ function App() {
         <ThemeProvider theme={primary}>
             <CssBaseline />
             <Container maxWidth="xl">
-                <Typography variant="h1">STREAMERIZE</Typography>
-                <Typography variant="h2" color="secondary">
+                <Typography
+                    variant="h1"
+                    sx={{ display: "inline-block", marginRight: ".25em" }}
+                >
+                    STREAMERIZE
+                </Typography>
+                <Typography
+                    variant="h2"
+                    color="secondary"
+                    sx={{
+                        display: { xs: "block", md: "inline-block" },
+                        marginBottom: "1em",
+                    }}
+                >
                     Browse random twitch.tv streams with fewer than ten viewers
                 </Typography>
 

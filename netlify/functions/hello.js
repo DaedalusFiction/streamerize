@@ -33,16 +33,16 @@ exports.handler = async function (event, context) {
 
         const allStreams = await api.get(
             process.env.REACT_APP_TWITCH_BASE_URL +
-                `/streams?first=4&language=en&after=${pageCursor}`
+                `/streams?first=100&language=en&after=${pageCursor}`
         );
         console.log(allStreams.data);
         const musicStreams = await api.get(
             process.env.REACT_APP_TWITCH_BASE_URL +
-                `/streams?game_id=460636&first=4&language=en&after=${pageCursor}`
+                `/streams?game_id=26936&first=100&language=en&after=${pageCursor}`
         );
         const chattingStreams = await api.get(
             process.env.REACT_APP_TWITCH_BASE_URL +
-                `/streams?game_id=460636&first=4&language=en&after=${pageCursor}`
+                `/streams?game_id=509658&first=100&language=en&after=${pageCursor}`
         );
         const finalStreamsList = [
             allStreams.data,
