@@ -19,52 +19,62 @@ const helloLocation = `/.netlify/functions/hello`;
 const baseURL = "https://twitch.tv/";
 
 const categories = [
-    { name: "All Streams", id: "460636" },
-    { name: "Just Chatting", id: "2" },
-    { name: "Music", id: "3" },
+    { name: "All Streams", id: 0 },
+    { name: "Just Chatting", id: 1 },
+    { name: "Music", id: 2 },
 ];
 
 function App() {
     const [loading, setLoading] = useState(false);
     const [currentStream, setCurrentStream] = useState(null);
-    const [streamList, setStreamList] = useState(null);
-    const [streamsIndex, setStreamsIndex] = useState(0);
+    const [streamsList, setStreamsList] = useState(null);
+    const [streamsIndex, setStreamsIndex] = useState(1);
     const [savedStreams, setSavedStreams] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
     useEffect(() => {
-        getStreams(categories[0].id);
+        getStreams();
     }, []);
 
-    const getStreams = async (id) => {
+    const handleCategoryChange = (categoryID) => {
+        if (categoryID === selectedCategory.id) {
+            return;
+        }
+        handleGetRandomStream(categories[categoryID]);
+        setSelectedCategory(categories[categoryID]);
+    };
+
+    const getStreams = async () => {
         try {
             setLoading(true);
-            const streams = await fetch(`${helloLocation}?id=${id}`).then(
-                (res) => res.json()
+            const streams = await fetch(`${helloLocation}`).then((res) =>
+                res.json()
             );
-            // setStreamList(streams.title);
-            setStreamList(streams.body.data);
-            setCurrentStream(streams.body.data[0].user_name);
+            setStreamsList(streams.body);
+            setCurrentStream(
+                streams.body[selectedCategory.id].data[1].user_name
+            );
+            setStreamsIndex(1);
         } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
         }
     };
-    const handleGetRandomStream = () => {
+    const handleGetRandomStream = (category) => {
         setLoading(true);
-        console.log("streamsIndex: ", streamsIndex);
-        console.log("streamList.length: ", streamList.length);
-        if (streamsIndex + 2 < streamList.length) {
-            setCurrentStream(streamList[streamsIndex + 1].user_name);
+        console.log(streamsList[category.id].data);
+        if (streamsIndex + 1 < streamsList[category.id].data.length) {
+            setCurrentStream(
+                streamsList[category.id].data[streamsIndex + 1].user_name
+            );
             setStreamsIndex(streamsIndex + 1);
             //prevent users from getting stream more than once per second
             setTimeout(() => {
                 setLoading(false);
             }, 1000);
         } else {
-            getStreams(categories[0].id);
-            setStreamsIndex(0);
+            getStreams();
         }
     };
     const handleSaveStream = () => {
@@ -125,8 +135,8 @@ function App() {
                                         savedStreams={savedStreams}
                                         setSavedStreams={setSavedStreams}
                                         selectedCategory={selectedCategory}
-                                        setSelectedCategory={
-                                            setSelectedCategory
+                                        handleCategoryChange={
+                                            handleCategoryChange
                                         }
                                     />
                                     <Box sx={{ display: "flex", gap: ".25em" }}>
@@ -140,7 +150,11 @@ function App() {
                                             disabled={loading}
                                             variant="contained"
                                             fullWidth
-                                            onClick={handleGetRandomStream}
+                                            onClick={() => {
+                                                handleGetRandomStream(
+                                                    selectedCategory
+                                                );
+                                            }}
                                         >
                                             {loading
                                                 ? "Loading..."

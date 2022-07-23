@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const Categories = ({ categories, selectedCategory, setSelectedCategory }) => {
+const Categories = ({ categories, selectedCategory, handleCategoryChange }) => {
     return (
         <Box>
             <List>
@@ -21,7 +21,7 @@ const Categories = ({ categories, selectedCategory, setSelectedCategory }) => {
                                     category.name === selectedCategory.name
                                 }
                                 onClick={() => {
-                                    setSelectedCategory(category);
+                                    handleCategoryChange(category.id);
                                 }}
                             >
                                 <ListItemText primary={category.name} />
