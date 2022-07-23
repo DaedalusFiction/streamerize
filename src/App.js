@@ -13,6 +13,7 @@ import {
 import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
+import { CleaningServices } from "@mui/icons-material";
 
 const helloLocation = `/.netlify/functions/hello`;
 const baseURL = "https://twitch.tv/";
@@ -26,22 +27,21 @@ const categories = [
 function App() {
     const [loading, setLoading] = useState(false);
     const [currentStream, setCurrentStream] = useState(null);
-    const [streamList, setStreamList] = useState("stream-list");
+    const [streamList, setStreamList] = useState(null);
     const [streamsIndex, setStreamsIndex] = useState(0);
     const [savedStreams, setSavedStreams] = useState([]);
-    const [streamID, setStreamID] = useState("stream-ID");
     const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
     useEffect(() => {
-        getStreams();
+        getStreams(categories[0].id);
     }, []);
 
-    const getStreams = async () => {
+    const getStreams = async (id) => {
         try {
             setLoading(true);
-            const streams = await fetch(
-                `${helloLocation}?id=${categories[0].id}`
-            ).then((res) => res.json());
+            const streams = await fetch(`${helloLocation}?id=${id}`).then(
+                (res) => res.json()
+            );
             // setStreamList(streams.title);
             setStreamList(streams.body.data);
             setCurrentStream(streams.body.data[0].user_name);
@@ -52,14 +52,19 @@ function App() {
         }
     };
     const handleGetRandomStream = () => {
-        if (!loading) {
-            setLoading(true);
+        setLoading(true);
+        console.log("streamsIndex: ", streamsIndex);
+        console.log("streamList.length: ", streamList.length);
+        if (streamsIndex + 2 < streamList.length) {
             setCurrentStream(streamList[streamsIndex + 1].user_name);
             setStreamsIndex(streamsIndex + 1);
             //prevent users from getting stream more than once per second
             setTimeout(() => {
                 setLoading(false);
             }, 1000);
+        } else {
+            getStreams(categories[0].id);
+            setStreamsIndex(0);
         }
     };
     const handleSaveStream = () => {
@@ -99,9 +104,6 @@ function App() {
                                         id="player"
                                         width="100%"
                                         height="100%"
-                                        onDuration={() => {
-                                            setLoading(false);
-                                        }}
                                         url={baseURL + currentStream}
                                     />
                                 </Box>

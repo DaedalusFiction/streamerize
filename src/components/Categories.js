@@ -11,7 +11,7 @@ import React from "react";
 
 const Categories = ({ categories, selectedCategory, setSelectedCategory }) => {
     return (
-        <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        <Box>
             <List>
                 {categories.map((category) => {
                     return (
