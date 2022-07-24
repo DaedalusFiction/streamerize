@@ -29,7 +29,9 @@ const categories = [
 function App() {
     const [loading, setLoading] = useState(false);
     const [refreshToggle, setRefreshToggle] = useState(true);
-    const [currentStream, setCurrentStream] = useState(null);
+    const [currentStream, setCurrentStream] = useState({
+        user_name: "",
+    });
     const [streams] = useGetStreams(
         setLoading,
         refreshToggle,
@@ -48,11 +50,10 @@ function App() {
     };
 
     const handleGetRandomStream = (category) => {
+        console.log(currentStream);
         setLoading(true);
         if (streamsIndex + 1 < streams[category.id].data.length) {
-            setCurrentStream(
-                streams[category.id].data[streamsIndex + 1].user_name
-            );
+            setCurrentStream(streams[category.id].data[streamsIndex + 1]);
             setStreamsIndex(streamsIndex + 1);
             //prevent users from getting stream more than once per second
             setTimeout(() => {
@@ -113,7 +114,7 @@ function App() {
                                         id="player"
                                         width="100%"
                                         height="100%"
-                                        url={baseURL + currentStream}
+                                        url={baseURL + currentStream.user_name}
                                     />
                                 </Box>
                             </Grid>

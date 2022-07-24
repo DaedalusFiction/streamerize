@@ -14,7 +14,7 @@ function useGetStreams(setLoading, refreshToggle, setCurrentStream) {
                 );
                 setStreams(streams.body);
 
-                setCurrentStream(streams.body[0].data[0].user_name);
+                setCurrentStream(streams.body[0].data[0]);
             } catch (err) {
                 console.log(err);
             } finally {
@@ -22,7 +22,7 @@ function useGetStreams(setLoading, refreshToggle, setCurrentStream) {
             }
         };
         getStreams();
-    }, [setLoading, refreshToggle]);
+    }, [setLoading, refreshToggle, setCurrentStream]);
     return [streams];
 }
 
