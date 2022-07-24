@@ -1,12 +1,31 @@
-import { Typography } from "@mui/material";
+import {
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 
-const SavedStreams = ({ savedStreams }) => {
+const SavedStreams = ({ currentStream, setCurrentStream, savedStreams }) => {
     return (
         <Box>
-            {savedStreams.map((savedStream, index) => {
-                return <Typography key={index}>{savedStream}</Typography>;
-            })}
+            <List>
+                {savedStreams.map((stream, index) => {
+                    return (
+                        <ListItem key={index} disablePadding>
+                            <ListItemButton
+                                selected={currentStream === stream}
+                                onClick={() => {
+                                    setCurrentStream(stream);
+                                }}
+                            >
+                                <ListItemText primary={stream} />
+                            </ListItemButton>
+                        </ListItem>
+                    );
+                })}
+            </List>
         </Box>
     );
 };

@@ -42,6 +42,8 @@ export default function Sidebar({
     setSavedStreams,
     selectedCategory,
     handleCategoryChange,
+    currentStream,
+    setCurrentStream,
 }) {
     const [value, setValue] = React.useState(0);
 
@@ -71,6 +73,8 @@ export default function Sidebar({
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <SavedStreams
+                    currentStream={currentStream}
+                    setCurrentStream={setCurrentStream}
                     savedStreams={savedStreams}
                     setSavedStreams={setSavedStreams}
                 />

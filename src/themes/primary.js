@@ -15,10 +15,12 @@ let primary = createTheme({
             // secondary: "#ABFAA9",
         },
         primary: {
-            main: "#F64740",
+            // main: "#F64740",
+            main: "#ed254e",
         },
         secondary: {
-            main: "#3A86FF",
+            // main: "#3A86FF",
+            main: "#0C7C59",
         },
         custom: {
             accent: "#8075FF",
@@ -60,6 +62,7 @@ primary = createTheme(primary, {
         },
         h2: {
             fontFamily: primary.typography.primary.main,
+            color: primary.palette.text.secondary,
             fontSize: "1rem",
         },
     },

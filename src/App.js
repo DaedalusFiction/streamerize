@@ -14,6 +14,8 @@ import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import { CleaningServices } from "@mui/icons-material";
+import useGetStreams from "./hooks/useGetStreams";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const helloLocation = `/.netlify/functions/hello`;
 const baseURL = "https://twitch.tv/";
@@ -26,15 +28,16 @@ const categories = [
 
 function App() {
     const [loading, setLoading] = useState(false);
+    const [refreshToggle, setRefreshToggle] = useState(true);
     const [currentStream, setCurrentStream] = useState(null);
-    const [streamsList, setStreamsList] = useState(null);
+    const [streams] = useGetStreams(
+        setLoading,
+        refreshToggle,
+        setCurrentStream
+    );
     const [streamsIndex, setStreamsIndex] = useState(1);
     const [savedStreams, setSavedStreams] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-
-    useEffect(() => {
-        getStreams();
-    }, []);
 
     const handleCategoryChange = (categoryID) => {
         if (categoryID === selectedCategory.id) {
@@ -44,28 +47,11 @@ function App() {
         setSelectedCategory(categories[categoryID]);
     };
 
-    const getStreams = async () => {
-        try {
-            setLoading(true);
-            const streams = await fetch(`${helloLocation}`).then((res) =>
-                res.json()
-            );
-            setStreamsList(streams.body);
-            setCurrentStream(
-                streams.body[selectedCategory.id].data[1].user_name
-            );
-            setStreamsIndex(1);
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setLoading(false);
-        }
-    };
     const handleGetRandomStream = (category) => {
         setLoading(true);
-        if (streamsIndex + 1 < streamsList[category.id].data.length) {
+        if (streamsIndex + 1 < streams[category.id].data.length) {
             setCurrentStream(
-                streamsList[category.id].data[streamsIndex + 1].user_name
+                streams[category.id].data[streamsIndex + 1].user_name
             );
             setStreamsIndex(streamsIndex + 1);
             //prevent users from getting stream more than once per second
@@ -73,10 +59,13 @@ function App() {
                 setLoading(false);
             }, 1000);
         } else {
-            getStreams();
+            setRefreshToggle(!refreshToggle);
         }
     };
     const handleSaveStream = () => {
+        if (savedStreams.includes(currentStream)) {
+            return;
+        }
         setSavedStreams([...savedStreams, currentStream]);
     };
     return (
@@ -91,7 +80,6 @@ function App() {
                 </Typography>
                 <Typography
                     variant="h2"
-                    color="secondary"
                     sx={{
                         display: { xs: "block", md: "inline-block" },
                         marginBottom: "1em",
@@ -149,13 +137,15 @@ function App() {
                                         handleCategoryChange={
                                             handleCategoryChange
                                         }
+                                        currentStream={currentStream}
+                                        setCurrentStream={setCurrentStream}
                                     />
                                     <Box sx={{ display: "flex", gap: ".25em" }}>
                                         <Button
                                             variant="contained"
                                             onClick={handleSaveStream}
                                         >
-                                            +
+                                            <FavoriteIcon />
                                         </Button>
                                         <Button
                                             disabled={loading}
