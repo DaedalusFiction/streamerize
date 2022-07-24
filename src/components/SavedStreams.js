@@ -54,6 +54,13 @@ const SavedStreams = ({
                     </ListItem>
                 );
             })}
+            {savedStreams.length === 0 && (
+                <ListItem>
+                    <ListItemText>
+                        No saved streams yet. Click the heart button to save.
+                    </ListItemText>
+                </ListItem>
+            )}
         </List>
     );
 };

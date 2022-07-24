@@ -79,8 +79,6 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
         const categoryLength = streams[category.id].data.length;
 
         if (index < categoryLength) {
-            console.log("Next stream is mature: ", nextStream.is_mature);
-            console.log("is showing mature: ", isShowingMature);
             while (
                 !isShowingMature &&
                 nextStream.is_mature &&
@@ -89,9 +87,7 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
                 index += 1;
                 nextStream = streams[category.id].data[index];
             }
-            console.log("setting stream: ", nextStream);
             setCurrentStream(nextStream);
-            console.log(index);
             setStreamsIndex(index);
             //prevent users from getting stream more than once per second
             setTimeout(() => {
