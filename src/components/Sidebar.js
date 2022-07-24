@@ -9,6 +9,7 @@ import { useState } from "react";
 import useGetStreams from "../hooks/useGetStreams";
 import { Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import Settings from "./Settings";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -57,6 +58,7 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
     const [streamsIndex, setStreamsIndex] = useState(1);
     const [savedStreams, setSavedStreams] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+    const [isShowingMature, setIsShowingMature] = useState(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -72,9 +74,25 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
 
     const handleGetRandomStream = (category) => {
         setLoading(true);
-        if (streamsIndex + 1 < streams[category.id].data.length) {
-            setCurrentStream(streams[category.id].data[streamsIndex + 1]);
-            setStreamsIndex(streamsIndex + 1);
+        let index = streamsIndex + 1;
+        let nextStream = streams[category.id].data[index];
+        const categoryLength = streams[category.id].data.length;
+
+        if (index < categoryLength) {
+            console.log("Next stream is mature: ", nextStream.is_mature);
+            console.log("is showing mature: ", isShowingMature);
+            while (
+                !isShowingMature &&
+                nextStream.is_mature &&
+                index < categoryLength
+            ) {
+                index += 1;
+                nextStream = streams[category.id].data[index];
+            }
+            console.log("setting stream: ", nextStream);
+            setCurrentStream(nextStream);
+            console.log(index);
+            setStreamsIndex(index);
             //prevent users from getting stream more than once per second
             setTimeout(() => {
                 setLoading(false);
@@ -87,6 +105,7 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
         if (savedStreams.includes(currentStream)) {
             return;
         }
+        setValue(1);
         setSavedStreams([...savedStreams, currentStream]);
     };
 
@@ -130,13 +149,13 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
                     />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    Settings
+                    <Settings
+                        isShowingMature={isShowingMature}
+                        setIsShowingMature={setIsShowingMature}
+                    />
                 </TabPanel>
             </Box>
             <Box sx={{ display: "flex", gap: ".25em" }}>
-                <Button variant="contained" onClick={handleSaveStream}>
-                    <FavoriteIcon />
-                </Button>
                 <Button
                     disabled={loading}
                     variant="contained"
@@ -146,6 +165,9 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
                     }}
                 >
                     {loading ? "Loading..." : "Random Stream"}
+                </Button>
+                <Button variant="contained" onClick={handleSaveStream}>
+                    <FavoriteIcon />
                 </Button>
             </Box>
         </Box>

@@ -23,40 +23,38 @@ const SavedStreams = ({
         setSavedStreams(newSavedStreams);
     };
     return (
-        <Box>
-            <List dense>
-                {savedStreams.map((stream, index) => {
-                    return (
-                        <ListItem
-                            key={index}
-                            disablePadding
-                            secondaryAction={
-                                <IconButton
-                                    edge="end"
-                                    aria-label="delete"
-                                    onClick={() => {
-                                        handleDelete(stream);
-                                    }}
-                                >
-                                    <ClearIcon />
-                                </IconButton>
-                            }
-                        >
-                            <ListItemButton
-                                selected={currentStream === stream}
+        <List dense>
+            {savedStreams.map((stream, index) => {
+                return (
+                    <ListItem
+                        key={index}
+                        disablePadding
+                        secondaryAction={
+                            <IconButton
+                                edge="end"
+                                aria-label="delete"
                                 onClick={() => {
-                                    setCurrentStream(stream);
+                                    handleDelete(stream);
                                 }}
                             >
-                                <ListItemText>
-                                    {`${stream.user_name} -- ${stream.game_name}`}
-                                </ListItemText>
-                            </ListItemButton>
-                        </ListItem>
-                    );
-                })}
-            </List>
-        </Box>
+                                <ClearIcon />
+                            </IconButton>
+                        }
+                    >
+                        <ListItemButton
+                            selected={currentStream === stream}
+                            onClick={() => {
+                                setCurrentStream(stream);
+                            }}
+                        >
+                            <ListItemText>
+                                {`${stream.user_name} -- ${stream.game_name}`}
+                            </ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+                );
+            })}
+        </List>
     );
 };
 

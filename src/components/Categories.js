@@ -11,26 +11,22 @@ import React from "react";
 
 const Categories = ({ categories, selectedCategory, handleCategoryChange }) => {
     return (
-        <Box>
-            <List>
-                {categories.map((category) => {
-                    return (
-                        <ListItem key={category.id} disablePadding>
-                            <ListItemButton
-                                selected={
-                                    category.name === selectedCategory.name
-                                }
-                                onClick={() => {
-                                    handleCategoryChange(category.id);
-                                }}
-                            >
-                                <ListItemText primary={category.name} />
-                            </ListItemButton>
-                        </ListItem>
-                    );
-                })}
-            </List>
-        </Box>
+        <List>
+            {categories.map((category) => {
+                return (
+                    <ListItem key={category.id} disablePadding>
+                        <ListItemButton
+                            selected={category.name === selectedCategory.name}
+                            onClick={() => {
+                                handleCategoryChange(category.id);
+                            }}
+                        >
+                            <ListItemText primary={category.name} />
+                        </ListItemButton>
+                    </ListItem>
+                );
+            })}
+        </List>
     );
 };
 
