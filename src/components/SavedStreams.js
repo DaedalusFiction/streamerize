@@ -24,7 +24,7 @@ const SavedStreams = ({
     };
     return (
         <Box>
-            <List>
+            <List dense>
                 {savedStreams.map((stream, index) => {
                     return (
                         <ListItem
