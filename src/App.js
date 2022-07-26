@@ -2,21 +2,11 @@ import { ThemeProvider } from "@emotion/react";
 import "./App.css";
 import { primary } from "./themes/primary";
 import { Container } from "@mui/system";
-import {
-    Box,
-    Button,
-    CssBaseline,
-    Grid,
-    Paper,
-    Typography,
-} from "@mui/material";
+import { Box, CssBaseline, Grid, Paper, Typography } from "@mui/material";
 import ReactPlayer from "react-player";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Sidebar from "./components/Sidebar";
-import { CleaningServices } from "@mui/icons-material";
-import useGetStreams from "./hooks/useGetStreams";
 
-const helloLocation = `/.netlify/functions/hello`;
 const baseURL = "https://twitch.tv/";
 
 function App() {
@@ -24,33 +14,6 @@ function App() {
         user_name: "",
     });
 
-    // const handleCategoryChange = (categoryID) => {
-    //     if (categoryID === selectedCategory.id) {
-    //         return;
-    //     }
-    //     handleGetRandomStream(categories[categoryID]);
-    //     setSelectedCategory(categories[categoryID]);
-    // };
-
-    // const handleGetRandomStream = (category) => {
-    //     setLoading(true);
-    //     if (streamsIndex + 1 < streams[category.id].data.length) {
-    //         setCurrentStream(streams[category.id].data[streamsIndex + 1]);
-    //         setStreamsIndex(streamsIndex + 1);
-    //         //prevent users from getting stream more than once per second
-    //         setTimeout(() => {
-    //             setLoading(false);
-    //         }, 1000);
-    //     } else {
-    //         setRefreshToggle(!refreshToggle);
-    //     }
-    // };
-    // const handleSaveStream = () => {
-    //     if (savedStreams.includes(currentStream)) {
-    //         return;
-    //     }
-    //     setSavedStreams([...savedStreams, currentStream]);
-    // };
     return (
         <ThemeProvider theme={primary}>
             <CssBaseline />

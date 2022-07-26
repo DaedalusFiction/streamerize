@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import SavedStreams from "./SavedStreams";
 import Categories from "./Categories";
@@ -55,10 +54,9 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
         refreshToggle,
         setCurrentStream
     );
-    const [streamsIndex, setStreamsIndex] = useState(1);
+    const [streamsIndex, setStreamsIndex] = useState(0);
     const [savedStreams, setSavedStreams] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-    const [isShowingMature, setIsShowingMature] = useState(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -75,25 +73,15 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
     const handleGetRandomStream = (category) => {
         setLoading(true);
         let index = streamsIndex + 1;
-        let nextStream = streams[category.id].data[index];
-        const categoryLength = streams[category.id].data.length;
 
-        if (index < categoryLength) {
-            while (
-                !isShowingMature &&
-                nextStream.is_mature &&
-                index < categoryLength
-            ) {
-                index += 1;
-                nextStream = streams[category.id].data[index];
-            }
-            setCurrentStream(nextStream);
+        if (streams[category.id].data[index]) {
             setStreamsIndex(index);
-            //prevent users from getting stream more than once per second
+            setCurrentStream(streams[category.id].data[index]);
             setTimeout(() => {
                 setLoading(false);
             }, 1000);
         } else {
+            setStreamsIndex(0);
             setRefreshToggle(!refreshToggle);
         }
     };
@@ -145,10 +133,7 @@ export default function Sidebar({ currentStream, setCurrentStream }) {
                     />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <Settings
-                        isShowingMature={isShowingMature}
-                        setIsShowingMature={setIsShowingMature}
-                    />
+                    <Settings />
                 </TabPanel>
             </Box>
             <Box sx={{ display: "flex", gap: ".25em" }}>

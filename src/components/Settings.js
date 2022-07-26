@@ -1,18 +1,9 @@
-import { List, ListItem, ListItemText, Switch } from "@mui/material";
+import { List, ListItem } from "@mui/material";
 
-const Settings = ({ isShowingMature, setIsShowingMature }) => {
+const Settings = () => {
     return (
         <List>
-            <ListItem>
-                <ListItemText>Show 18+ Streams</ListItemText>
-                <Switch
-                    edge="end"
-                    onChange={() => {
-                        setIsShowingMature(!isShowingMature);
-                    }}
-                    checked={isShowingMature}
-                />
-            </ListItem>
+            <ListItem></ListItem>
         </List>
     );
 };

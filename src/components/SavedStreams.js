@@ -3,9 +3,7 @@ import {
     List,
     ListItem,
     ListItemButton,
-    ListItemIcon,
     ListItemText,
-    Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import ClearIcon from "@mui/icons-material/Clear";

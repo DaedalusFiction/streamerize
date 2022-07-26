@@ -1,12 +1,4 @@
-import {
-    Box,
-    Button,
-    Divider,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-} from "@mui/material";
+import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import React from "react";
 
 const Categories = ({ categories, selectedCategory, handleCategoryChange }) => {
